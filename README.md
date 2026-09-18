@@ -1,46 +1,35 @@
-# Gastos del mes
+﻿# Gastos del mes
 
-Slug: `gastos-del-mes`
+App junior para anotar gastos del hogar, guardarlos en **SQLite** y ver totales del mes por categoría desde una pantalla **HTML + JavaScript**.
 
-App en Python, HTML/JS y SQLite para registrar gastos del hogar por categoria, ver totales del mes y detectar en que se va la plata. Automatiza el control de plata diaria/mensual sin planillas complicadas.
-
-Este repo es un ejercicio junior de portfolio (SQL / Python / automatizacion).
-No es un producto de produccion: cubre un caso feliz, trae datos de ejemplo y tests cortos.
+## Qué automatiza
+El control mensual de plata personal/hogar: cargar gastos del día, agruparlos por categoría y ver en qué se va el presupuesto sin armar una planilla a mano.
 
 ## Stack
+- **Python + Flask**: API y lógica
+- **HTML + JavaScript**: interfaz
+- **SQLite**: persistencia real (archivo `data/gastos.db`)
 
-python, html, javascript, sqlite
-
-## Como correrlo
-
+## Instalación
 ```bash
-python main.py
-python -m pytest -q
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# Linux/macOS
+# source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
-## Features
+## Ejecución
+```bash
+python app.py
+```
+Abrí http://127.0.0.1:5000
 
-- CLI con --help
-- Carga de datos de ejemplo
-- Resumen imprimible
-- Tests del caso feliz
+## Tests
+```bash
+pytest -q
+```
 
-## Datos de ejemplo
-
-El archivo `data/sample.csv` alcanza para ver el flujo completo sin APIs externas.
-
-## Limite honesto
-
-No hay autenticacion, ni UI, ni escala. Sirve para leer el codigo de una sentada y
-mostrar criterio de junior: un entry point, una tabla SQLite y tests del camino feliz.
-
-## Publicacion
-
-Repo: https://github.com/juliomarianocampuzano-git/gastos-del-mes
-
-Audiencia: AR/LATAM/EU/US
-Nivel: junior
-Dominio: Python/SQL/IA Automation
-
-Este README se completo en el paso documentar del ciclo local. El post de LinkedIn
-vive en LINKEDIN.md (espanol rioplatense, tono junior, con un limite honesto).
+## Límites honestos
+No tiene usuarios ni login, no sincroniza con el banco y no reemplaza un Excel contable. Es un ejercicio claro de backend + frontend + SQL.

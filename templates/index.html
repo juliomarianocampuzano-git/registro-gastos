@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gastos del mes</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <main>
+    <h1>Gastos del mes</h1>
+    <p class="lead">Anotá en qué se va la plata del hogar y mirá el total por categoría.</p>
+
+    <section class="card">
+      <label>Mes <input type="month" id="month" /></label>
+      <div id="summary" class="summary"></div>
+    </section>
+
+    <section class="card">
+      <h2>Nuevo gasto</h2>
+      <form id="form">
+        <input name="amount" type="number" step="0.01" min="0.01" placeholder="Monto" required />
+        <input name="category" list="cats" placeholder="Categoría (comida, transporte...)" required />
+        <datalist id="cats">
+          <option value="comida"></option>
+          <option value="transporte"></option>
+          <option value="servicios"></option>
+          <option value="hogar"></option>
+          <option value="salud"></option>
+          <option value="otros"></option>
+        </datalist>
+        <input name="note" placeholder="Nota (opcional)" />
+        <input name="spent_on" type="date" required />
+        <button type="submit">Guardar</button>
+      </form>
+      <p id="form-error" class="error" hidden></p>
+    </section>
+
+    <section class="card">
+      <h2>Movimientos</h2>
+      <ul id="list"></ul>
+    </section>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>
