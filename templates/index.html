@@ -1,46 +1,166 @@
-﻿<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gastos del mes</title>
-  <link rel="stylesheet" href="/static/style.css" />
-</head>
-<body>
-  <main>
-    <h1>Gastos del mes</h1>
-    <p class="lead">Anotá en qué se va la plata del hogar y mirá el total por categoría.</p>
-
-    <section class="card">
-      <label>Mes <input type="month" id="month" /></label>
-      <div id="summary" class="summary"></div>
-    </section>
-
-    <section class="card">
-      <h2>Nuevo gasto</h2>
-      <form id="form">
-        <input name="amount" type="number" step="0.01" min="0.01" placeholder="Monto" required />
-        <input name="category" list="cats" placeholder="Categoría (comida, transporte...)" required />
-        <datalist id="cats">
-          <option value="comida"></option>
-          <option value="transporte"></option>
-          <option value="servicios"></option>
-          <option value="hogar"></option>
-          <option value="salud"></option>
-          <option value="otros"></option>
-        </datalist>
-        <input name="note" placeholder="Nota (opcional)" />
-        <input name="spent_on" type="date" required />
-        <button type="submit">Guardar</button>
-      </form>
-      <p id="form-error" class="error" hidden></p>
-    </section>
-
-    <section class="card">
-      <h2>Movimientos</h2>
-      <ul id="list"></ul>
-    </section>
-  </main>
-  <script src="/static/app.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Gastos del mes · Tu hogar, en orden</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Ir al contenido</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Gastos del mes, inicio"
+        ><span class="brand-mark" aria-hidden="true">$</span> Gastos del mes</a
+      >
+      <span class="local-badge"
+        ><span aria-hidden="true">●</span> Uso personal · datos locales</span
+      >
+    </header>
+    <main id="main">
+      <section class="page-heading" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">UN POCO MÁS DE CLARIDAD</p>
+          <h1 id="page-title">Tu mes, en números.</h1>
+          <p class="lead">
+            Registrá lo cotidiano y entendé en qué se va tu plata.
+          </p>
+        </div>
+        <div class="month-control">
+          <label for="month">Mes que querés ver</label
+          ><input type="month" id="month" required />
+        </div>
+      </section>
+      <p id="page-error" class="notice error" role="alert" hidden></p>
+      <section
+        class="stats"
+        aria-label="Resumen mensual"
+        aria-busy="true"
+        id="stats"
+      >
+        <article class="stat stat-primary">
+          <p>Total del mes</p>
+          <strong id="total">—</strong
+          ><span>Unidades monetarias · una sola moneda</span>
+        </article>
+        <article class="stat">
+          <p>Gastos registrados</p>
+          <strong id="count">—</strong
+          ><span>Pequeños movimientos, una vista completa</span>
+        </article>
+        <article class="stat">
+          <p>Categoría principal</p>
+          <strong class="category-total" id="top-category">—</strong
+          ><span id="top-detail">Todavía sin movimientos</span>
+        </article>
+      </section>
+      <div class="workspace">
+        <aside>
+          <section class="card" aria-labelledby="new-title">
+            <p class="eyebrow">SUMÁ UN MOVIMIENTO</p>
+            <h2 id="new-title">Nuevo gasto</h2>
+            <form id="form">
+              <label for="amount">Monto</label>
+              <div class="money-input">
+                <span aria-hidden="true">$</span
+                ><input
+                  id="amount"
+                  name="amount"
+                  type="number"
+                  inputmode="decimal"
+                  step="0.01"
+                  min="0.01"
+                  max="999999999.99"
+                  placeholder="0,00"
+                  required
+                />
+              </div>
+              <label for="category">Categoría</label
+              ><input
+                id="category"
+                name="category"
+                list="cats"
+                maxlength="60"
+                placeholder="Ej. Comida"
+                required
+              />
+              <datalist id="cats">
+                <option value="Comida"></option>
+                <option value="Transporte"></option>
+                <option value="Servicios"></option>
+                <option value="Hogar"></option>
+                <option value="Salud"></option>
+                <option value="Otros"></option>
+              </datalist>
+              <label for="spent-on">Fecha</label
+              ><input id="spent-on" name="spent_on" type="date" required />
+              <label for="note"
+                >Nota <span class="optional">(opcional)</span></label
+              ><input
+                id="note"
+                name="note"
+                maxlength="500"
+                placeholder="¿En qué lo usaste?"
+              />
+              <p id="form-error" class="error" role="alert" hidden></p>
+              <button class="button primary" id="save" type="submit">
+                Guardar gasto <span aria-hidden="true">↗</span>
+              </button>
+            </form>
+            <p class="form-hint">
+              Los importes se guardan con precisión de centavos.
+            </p>
+          </section>
+          <section
+            class="card categories-card"
+            aria-labelledby="categories-title"
+          >
+            <h2 id="categories-title">Por categoría</h2>
+            <div id="categories"><p class="muted">Cargando resumen…</p></div>
+          </section>
+        </aside>
+        <section class="card movements-card" aria-labelledby="movements-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">EL DETALLE DE TU MES</p>
+              <h2 id="movements-title">Movimientos</h2>
+            </div>
+            <a id="export" class="button secondary" aria-disabled="true"
+              >Exportar CSV <span aria-hidden="true">↓</span></a
+            >
+          </div>
+          <p class="list-caption" id="list-caption">Cargando movimientos…</p>
+          <ul
+            id="list"
+            aria-label="Gastos del mes seleccionado"
+            aria-busy="true"
+          ></ul>
+          <p class="data-note">
+            Tu información se guarda en la base local de esta aplicación. No se
+            conecta con bancos.
+          </p>
+        </section>
+      </div>
+      <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+      <footer>
+        Hecho para ordenar lo cotidiano. <span>Python · Flask · SQLite</span>
+      </footer>
+    </main>
+    <dialog id="delete-dialog" aria-labelledby="delete-title">
+      <h2 id="delete-title">¿Eliminar este gasto?</h2>
+      <p id="delete-detail"></p>
+      <p class="muted">El movimiento se quitará de tu base local.</p>
+      <div class="dialog-actions">
+        <button class="button secondary" id="cancel-delete" type="button">
+          Cancelar</button
+        ><button class="button danger" id="confirm-delete" type="button">
+          Eliminar gasto
+        </button>
+      </div>
+    </dialog>
+  </body>
 </html>
