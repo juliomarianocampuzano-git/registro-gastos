@@ -69,7 +69,7 @@ def test_delete_expense(client):
 def test_index_renders(client):
     res = client.get("/")
     assert res.status_code == 200
-    assert b"Gastos del mes" in res.data
+    assert b"Registro de gastos" in res.data
     assert b"app.js" in res.data
 
 

@@ -1,6 +1,6 @@
-# Gastos del mes
+# Registro de gastos
 
-[![Tests and lint](https://github.com/juliomarianocampuzano-git/gastos-del-mes/actions/workflows/ci.yml/badge.svg)](https://github.com/juliomarianocampuzano-git/gastos-del-mes/actions/workflows/ci.yml)
+[![Tests and lint](https://github.com/juliomarianocampuzano-git/registro-gastos/actions/workflows/ci.yml/badge.svg)](https://github.com/juliomarianocampuzano-git/registro-gastos/actions/workflows/ci.yml)
 
 Una app para cargar gastos del hogar, ver el total del mes por categoría y descargar los movimientos en CSV. Guarda los datos en una base SQLite en tu computadora.
 
