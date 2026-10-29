@@ -2,11 +2,11 @@
 
 [![Tests and lint](https://github.com/juliomarianocampuzano-git/gastos-del-mes/actions/workflows/ci.yml/badge.svg)](https://github.com/juliomarianocampuzano-git/gastos-del-mes/actions/workflows/ci.yml)
 
-Una aplicación personal para registrar gastos del hogar, ver totales mensuales por categoría y exportar movimientos a CSV. Python + Flask + SQLite, con una interfaz HTML, CSS y JavaScript sin servicios externos.
+Una app para cargar gastos del hogar, ver el total del mes por categoría y descargar los movimientos en CSV. Guarda los datos en una base SQLite en tu computadora.
 
 ![Demo con seis gastos ficticios](docs/demo.jpg)
 
-## Qué podés hacer
+## Qué hace
 
 - Agregar y eliminar gastos, con confirmación antes de eliminar.
 - Filtrar movimientos por mes y ver totales y distribución por categoría.

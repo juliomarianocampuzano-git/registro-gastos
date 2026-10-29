@@ -58,7 +58,7 @@ function renderSummary(summary) {
   el("top-category").textContent = top ? top.category : "Sin gastos";
   el("top-detail").textContent = top
     ? formatMoney(top.total_cents) + " en el mes"
-    : "Un buen momento para empezar";
+    : "No hay gastos cargados";
   const container = el("categories");
   container.replaceChildren();
   if (!top) {
@@ -97,13 +97,13 @@ function renderExpenses(expenses) {
   list.replaceChildren();
   el("list-caption").textContent = expenses.length
     ? "Más recientes primero · " + expenses.length + " movimientos"
-    : "Tu registro empieza acá";
+    : "No hay gastos cargados";
   if (!expenses.length) {
     const empty = textNode("li", "", "empty-state");
     empty.append(
       textNode("span", "↗", "empty-icon"),
       textNode("h3", "Todavía no hay gastos este mes"),
-      textNode("p", "Cargá tu primer movimiento y empezá a ver el panorama."),
+      textNode("p", "Cargá un gasto para ver el resumen."),
     );
     list.append(empty);
     return;
@@ -119,11 +119,11 @@ function renderExpenses(expenses) {
     copy.append(when);
     if (expense.note) copy.append(textNode("p", expense.note, "expense-note"));
     const actions = textNode("div", "", "expense-actions");
-    const remove = textNode("button", "Eliminar", "delete-button");
+    const remove = textNode("button", "Borrar", "delete-button");
     remove.type = "button";
     remove.setAttribute(
       "aria-label",
-      "Eliminar gasto de " + expense.category + " del " + expense.spent_on,
+      "Borrar gasto de " + expense.category + " del " + expense.spent_on,
     );
     remove.addEventListener("click", () => {
       pendingDelete = expense;
@@ -229,7 +229,7 @@ el("confirm-delete").addEventListener("click", async () => {
   try {
     await api("/api/expenses/" + pendingDelete.id, { method: "DELETE" });
     dialog.close();
-    el("status").textContent = "Gasto eliminado.";
+    el("status").textContent = "Gasto borrado.";
     await loadAll();
   } catch (error) {
     dialog.close();
